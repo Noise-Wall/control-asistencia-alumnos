@@ -32,24 +32,29 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
       drawer: Drawer(),
       body: _paginas[_paginaSeleccionada],
       // barra de navegacion inferior
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: NavigationBar(
         // funcion para actualizar la pagina actual.
-        onTap: (int index) => setState(() {
+        selectedIndex: _paginaSeleccionada,
+        onDestinationSelected: (int index) => setState(() {
           _paginaSeleccionada = index;
         }),
-        fixedColor: Color(0xd5be7f),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+        backgroundColor: Colors.amber.shade600.withRed(200),
+        indicatorColor: Colors.indigo.shade600,
+        destinations: <NavigationDestination>[
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined, color: Colors.indigo.shade600,),
             label: "Inicio",
+            selectedIcon: Icon(Icons.home, color: Colors.white,),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
+          NavigationDestination(
+            icon: Icon(Icons.people_alt_outlined, color: Colors.indigo.shade600),
             label: "Grupos",
+            selectedIcon: Icon(Icons.people_alt, color: Colors.white,),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.access_time),
+          NavigationDestination(
+            icon: Icon(Icons.access_time_outlined, color: Colors.indigo.shade600),
             label: "Horarios",
+            selectedIcon: Icon(Icons.access_time, color: Colors.white,),
           ),
         ],
       ),
