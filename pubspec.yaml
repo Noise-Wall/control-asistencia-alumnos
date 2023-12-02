@@ -13,12 +13,17 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  hive:
+  hive_flutter:
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  hive_generator:
+  build_runner:
 
 flutter:
   uses-material-design: true
