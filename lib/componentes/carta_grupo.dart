@@ -35,31 +35,34 @@ class GrupoCarta extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Column(
+            Expanded(
+                child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(nombreGrupo,
+                    softWrap: true,
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo.shade600,
+                    )),
+                Text(nombreMateria,
+                    softWrap: true,
+                    maxLines: 2,
                     style: TextStyle(
                       fontSize: 24.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.indigo.shade600,
                     )),
                 Text(
-                  nombreMateria,
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.indigo.shade600,
-                  ),
-                ),
-                Text(
-                  "$numAlumnos alumnos, ${dias.fold(0, (previous, element) => element == true ? previous + 1 : previous)} dias a la semana",
-                  style: TextStyle(
-                    color: Colors.black26,
-                  ),
-                )
+                    "$numAlumnos alumnos, ${dias.fold(0, (previous, element) => element == true ? previous + 1 : previous)} dias a la semana",
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.black26,
+                    )),
               ],
-            ),
+            ))
           ],
         ),
       ),
