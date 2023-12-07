@@ -85,10 +85,14 @@ class _GrupoAddState extends State<GrupoAdd> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Boton(texto: "Guardar", onPresionado: crearGrupo),
                   Boton(
-                      texto: "Cancelar",
-                      onPresionado: Navigator.of(context).pop),
+                    texto: "Guardar",
+                    onPresionado: crearGrupo,
+                  ),
+                  Boton(
+                    texto: "Cancelar",
+                    onPresionado: Navigator.of(context).pop,
+                  ),
                 ],
               )
             ],

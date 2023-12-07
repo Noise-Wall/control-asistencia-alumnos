@@ -13,7 +13,7 @@ class Inicio extends StatelessWidget {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(25),
+        padding: const EdgeInsets.all(25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -27,8 +27,8 @@ class Inicio extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 20.0),
-              padding: EdgeInsets.all(25),
+              margin: const EdgeInsets.symmetric(vertical: 20.0),
+              padding: const EdgeInsets.all(25),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.indigo),
                 borderRadius: BorderRadius.circular(12),

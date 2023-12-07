@@ -14,11 +14,7 @@ class Grupos extends StatefulWidget {
 }
 
 class _GruposState extends State<Grupos> {
-  void crearGrupo() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Processing Data')),
-    );
-  }
+  final ScrollController _barra = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +31,22 @@ class _GruposState extends State<Grupos> {
         backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),
       ),
-      body: ListView.builder(
-        itemCount: widget.db.Grupos.length,
-        itemBuilder: (context, index) {
-          return GrupoCarta(
-              nombreGrupo: widget.db.Grupos[index][0],
-              nombreMateria: widget.db.Grupos[index][1],
-              numAlumnos: widget.db.Grupos[index][2],
-              dias: widget.db.Grupos[index][3]);
-        },
+      body: Scrollbar(
+        thumbVisibility: true,
+        controller: _barra,
+        thickness: 7,
+        radius: const Radius.circular(20),
+        child: ListView.builder(
+          controller: _barra,
+          itemCount: widget.db.Grupos.length,
+          itemBuilder: (context, index) {
+            return GrupoCarta(
+                nombreGrupo: widget.db.Grupos[index][0],
+                nombreMateria: widget.db.Grupos[index][1],
+                numAlumnos: widget.db.Grupos[index][2],
+                dias: widget.db.Grupos[index][3]);
+          },
+        ),
       ),
     );
   }
