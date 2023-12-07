@@ -14,6 +14,7 @@ class PaginaPrincipal extends StatefulWidget {
 }
 
 class _PaginaPrincipalState extends State<PaginaPrincipal> {
+  ThemeMode _themeMode = ThemeMode.system;
   // el index de la pagina seleccionada. para llevar rastreo de pagina actual.
   int _paginaSeleccionada = 0;
 
@@ -37,6 +38,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
       db.loadGrupos();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +46,49 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
         title: const Text("Página principal"),
         centerTitle: true,
       ),
-      drawer: const Drawer(),
+      // Basicamente tododentro del Drawer es temporal.
+      // A futuro se cambiará a NavigationDrawer, al igual que con el
+      // BottomNavigationBar.
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration:
+                  BoxDecoration(color: Colors.amber.shade600.withRed(200)),
+              child:
+                  const Text("Header de drawer, quiza para mostrar el perfil"),
+            ),
+            ListTile(
+              leading: const Icon(Icons.person_2_rounded),
+              title: const Text('Perfil'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.sync),
+              title: const Text('Sincronización'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.list_alt),
+              title: const Text('Pase de lista'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.bar_chart),
+              title: const Text('Estadísticas'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(ThemeMode.system == ThemeMode.dark
+                  ? Icons.light_mode_rounded
+                  : Icons.dark_mode_rounded),
+              title: const Text('Cambiar tema'),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
       body: _paginas[_paginaSeleccionada],
       // barra de navegacion inferior
       bottomNavigationBar: NavigationBar(
