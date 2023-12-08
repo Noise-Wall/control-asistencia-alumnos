@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../data/localdb.dart';
-import 'grupos.dart';
-import 'horarios.dart';
-import 'inicio.dart';
+import 'pagina_principal/grupos.dart';
+import 'pagina_principal/horarios.dart';
+import 'pagina_principal/inicio.dart';
 
 class PaginaPrincipal extends StatefulWidget {
   const PaginaPrincipal({super.key});

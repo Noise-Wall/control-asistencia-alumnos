@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../data/localdb.dart';
+import '../../data/localdb.dart';
 
 class Inicio extends StatelessWidget {
   final AsistenciasDB db;

@@ -1,7 +1,7 @@
 import 'package:control_asistencias/componentes/boton.dart';
 import 'package:flutter/material.dart';
 
-import '../data/localdb.dart';
+import '../../data/localdb.dart';
 
 class GrupoAdd extends StatefulWidget {
   final AsistenciasDB db;

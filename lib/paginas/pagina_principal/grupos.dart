@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../componentes/carta_grupo.dart';
-import '../paginas/grupos_add.dart';
-import '../data/localdb.dart';
+import '../../componentes/carta_grupo.dart';
+import 'grupos_add.dart';
+import '../../data/localdb.dart';
 
 class Grupos extends StatefulWidget {
   final AsistenciasDB db;
