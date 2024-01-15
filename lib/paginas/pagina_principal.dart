@@ -1,7 +1,8 @@
+import 'package:control_asistencias/data/db_principal.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-import '../data/localdb.dart';
+import '../data/modelos/grupos.dart';
+
 import 'pagina_principal/grupos.dart';
 import 'pagina_principal/horarios.dart';
 import 'pagina_principal/inicio.dart';
@@ -18,25 +19,24 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
   // el index de la pagina seleccionada. para llevar rastreo de pagina actual.
   int _paginaSeleccionada = 0;
 
-  // declaracion de la base de datos local.
-  final _asistencias = Hive.box('Asistencias');
-  static AsistenciasDB db = AsistenciasDB();
-
   // lista de paginas de la barra de navegacion inferior.
   final List _paginas = [
-    Inicio(db: db),
-    Grupos(db: db),
-    Horarios(db: db),
+    Inicio(),
+    Grupos(),
+    Horarios(),
   ];
 
   // inicializacion de la base de datos
   @override
   void initState() {
-    if (_asistencias.get("GRUPOS") == null) {
-      db.crearGrupoPrueba();
-    } else {
-      db.loadGrupos();
-    }
+    super.initState();
+  }
+
+  // cierra la base de datos al cerrar app
+  @override
+  void dispose() {
+    ControlAsistenciasDB.instance.close();
+    super.dispose();
   }
 
   @override

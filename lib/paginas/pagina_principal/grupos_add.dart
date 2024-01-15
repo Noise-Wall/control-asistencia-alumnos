@@ -1,25 +1,26 @@
 import 'package:control_asistencias/componentes/boton.dart';
+import 'package:control_asistencias/data/controladores/ctrl_grupos.dart';
+import 'package:control_asistencias/data/modelos/grupos.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/localdb.dart';
+import 'grupos.dart';
 
 class GrupoAdd extends StatefulWidget {
-  final AsistenciasDB db;
+  final Grupo? grupo;
 
-  GrupoAdd({
-    super.key,
-    required this.db,
-  });
+  const GrupoAdd({super.key, this.grupo});
 
   @override
   State<GrupoAdd> createState() => _GrupoAddState();
 }
 
 class _GrupoAddState extends State<GrupoAdd> {
-  // controladores para la insercion de datos
-  final _grupoCtrl = TextEditingController();
+  final _ctrlGrupos = CtrlGrupos();
 
-  final _materiaCtrl = TextEditingController();
+  // controladores para la insercion de datos
+  final _nombreGrupoCtrl = TextEditingController();
+  final _nombreMateriaCtrl = TextEditingController();
+  String? _turnoCtrl;
 
   // clave identificadora de este formulario
   final _formKey = GlobalKey<FormState>();
@@ -33,19 +34,36 @@ class _GrupoAddState extends State<GrupoAdd> {
   }
 
   // accion al validarse con exito el formulario. agrega un grupo nuevo.
-  void crearGrupo() {
+  void crearEditarGrupo() async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        widget.db.Grupos.add([
-          _grupoCtrl.text,
-          _materiaCtrl.text,
-          0,
-          [false, false, false, false, false, false, false]
-        ]);
-      });
-      Navigator.of(context).pop();
-      widget.db.updateGrupos();
+      if (widget.grupo != null) {
+        print("update");
+        final grupo = widget.grupo!.copy(
+          idGrupo: widget.grupo!.idGrupo,
+          nombreGrupo: _nombreGrupoCtrl.text,
+          nombreMateria: _nombreMateriaCtrl.text,
+          turno: _turnoCtrl.toString(),
+        );
+        await _ctrlGrupos.updateGrupo(grupo);
+        Navigator.pop(context, _ctrlGrupos.readGrupoAll());
+      } else {
+        final grupo = Grupo(
+          nombreGrupo: _nombreGrupoCtrl.text,
+          nombreMateria: _nombreMateriaCtrl.text,
+          turno: _turnoCtrl.toString(),
+        );
+        await _ctrlGrupos.createGrupo(grupo);
+        Navigator.of(context).pop();
+      }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _nombreGrupoCtrl.text = widget.grupo?.nombreGrupo ?? '';
+    _nombreMateriaCtrl.text = widget.grupo?.nombreMateria ?? '';
+    _turnoCtrl = widget.grupo?.turno ?? 'Matutino';
   }
 
   @override
@@ -64,7 +82,7 @@ class _GrupoAddState extends State<GrupoAdd> {
             children: [
               // campo de grupo
               TextFormField(
-                controller: _grupoCtrl,
+                controller: _nombreGrupoCtrl,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: "Nombre del grupo:",
@@ -74,12 +92,54 @@ class _GrupoAddState extends State<GrupoAdd> {
               ),
               // campo de materia
               TextFormField(
-                controller: _materiaCtrl,
+                controller: _nombreMateriaCtrl,
                 decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: "Materia:",
                     hintText: "Nombre de la materia, e.g. Programación..."),
                 validator: campoValidador,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListTile(
+                    title: const Text("Matutino"),
+                    leading: Radio<String>(
+                      value: "Matutino",
+                      groupValue: _turnoCtrl,
+                      onChanged: (String? turno) {
+                        setState(() {
+                          _turnoCtrl = turno;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text("Vespertino"),
+                    leading: Radio<String>(
+                      value: "Vespertino",
+                      groupValue: _turnoCtrl,
+                      onChanged: (String? turno) {
+                        setState(() {
+                          _turnoCtrl = turno;
+                        });
+                      },
+                    ),
+                    selected: true,
+                  ),
+                  ListTile(
+                    title: const Text("Nocturno"),
+                    leading: Radio<String>(
+                      value: "Nocturno",
+                      groupValue: _turnoCtrl,
+                      onChanged: (String? turno) {
+                        setState(() {
+                          _turnoCtrl = turno;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
               // fila de botones
               Row(
@@ -87,11 +147,13 @@ class _GrupoAddState extends State<GrupoAdd> {
                 children: [
                   Boton(
                     texto: "Guardar",
-                    onPresionado: crearGrupo,
+                    onPresionado: crearEditarGrupo,
                   ),
                   Boton(
                     texto: "Cancelar",
-                    onPresionado: Navigator.of(context).pop,
+                    onPresionado: Navigator
+                        .of(context)
+                        .pop,
                   ),
                 ],
               )

@@ -1,49 +1,70 @@
+import 'package:control_asistencias/componentes/anim_carga.dart';
+import 'package:control_asistencias/data/controladores/ctrl_grupos.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import '../../data/localdb.dart';
 
-class Inicio extends StatelessWidget {
-  final AsistenciasDB db;
-  final _asistencias = Hive.box('Asistencias');
+class Inicio extends StatefulWidget {
+  const Inicio({super.key});
 
-  Inicio({super.key, required this.db});
+  @override
+  State<Inicio> createState() => _InicioState();
+}
+
+class _InicioState extends State<Inicio> {
+  bool isLoading = false;
+  final _ctrlGrupo = CtrlGrupos();
+
+  int numGrupos = 0;
+
+  Future getStats() async {
+    setState(() => isLoading = true);
+    numGrupos = await _ctrlGrupo.countGrupo();
+    setState(() => isLoading = false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getStats();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Bienvenido, ${db.Profesor}",
-              style: const TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w700,
-                color: Colors.indigo,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 20.0),
+      body: isLoading
+          ? const AnimCarga()
+          : Container(
+              alignment: Alignment.center,
               padding: const EdgeInsets.all(25),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.indigo),
-                borderRadius: BorderRadius.circular(12),
-              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                      "Actualmente tiene ${db.Grupos.length} ${db.Grupos.length == 1 ? "grupo" : "grupos"}."),
-                  Text("Actualmente imparte ${db.Grupos} horas de clase."),
+                  const Text(
+                    "Bienvenido",
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.indigo,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20.0),
+                    padding: const EdgeInsets.all(25),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.indigo),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                            "Actualmente tiene $numGrupos ${numGrupos != 1 ? "grupos" : "grupo"}."),
+                        Text("Actualmente imparte (HORAS) horas de clase."),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

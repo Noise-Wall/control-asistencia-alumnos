@@ -1,13 +1,14 @@
+import 'package:control_asistencias/componentes/anim_carga.dart';
+import 'package:control_asistencias/data/controladores/ctrl_grupos.dart';
+import 'package:control_asistencias/data/modelos/grupos.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../../componentes/carta_grupo.dart';
 import 'grupos_add.dart';
-import '../../data/localdb.dart';
 
 class Grupos extends StatefulWidget {
-  final AsistenciasDB db;
-
-  Grupos({super.key, required this.db});
+  Grupos({super.key});
 
   @override
   State<Grupos> createState() => _GruposState();
@@ -15,39 +16,83 @@ class Grupos extends StatefulWidget {
 
 class _GruposState extends State<Grupos> {
   final ScrollController _barra = ScrollController();
+  bool isLoading = false;
+  late List<Grupo> grupos;
+  final ctrlGrupo = CtrlGrupos();
+
+  Future refreshGrupos() async {
+    setState(() => isLoading = true);
+    grupos = await ctrlGrupo.readGrupoAll();
+    if (dotenv.maybeGet("DEV") != null) {
+      print("not null");
+      if (grupos.isEmpty) {
+        const grupo = Grupo(
+          nombreGrupo: "Grupo de prueba",
+          nombreMateria: "Materia de prueba",
+          turno: "Matutino",
+        );
+        ctrlGrupo.createGrupo(grupo);
+      }
+    } else {
+      print("null");
+    }
+    setState(() => isLoading = false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    refreshGrupos();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => GrupoAdd(
-              db: widget.db,
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GrupoAdd(),
             ),
-          ),
-        ),
+          ).then((value) => setState(() => refreshGrupos()));
+        },
         backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),
       ),
-      body: Scrollbar(
-        thumbVisibility: true,
-        controller: _barra,
-        thickness: 7,
-        radius: const Radius.circular(20),
-        child: ListView.builder(
-          controller: _barra,
-          itemCount: widget.db.Grupos.length,
-          itemBuilder: (context, index) {
-            return GrupoCarta(
-                nombreGrupo: widget.db.Grupos[index][0],
-                nombreMateria: widget.db.Grupos[index][1],
-                numAlumnos: widget.db.Grupos[index][2],
-                dias: widget.db.Grupos[index][3]);
-          },
-        ),
-      ),
+      body: isLoading
+          ? const AnimCarga()
+          : grupos.isEmpty
+              ? const Text("No hay grupos")
+              : Scrollbar(
+                  thumbVisibility: true,
+                  controller: _barra,
+                  thickness: 7,
+                  radius: const Radius.circular(20),
+                  child: ListView.builder(
+                    controller: _barra,
+                    itemCount: grupos.length,
+                    itemBuilder: (context, index) {
+                      return GrupoCarta(
+                          idGrupo: grupos[index].idGrupo ?? 0,
+                          nombreGrupo: grupos[index].nombreGrupo,
+                          nombreMateria: grupos[index].nombreMateria,
+                          turno: grupos[index].turno,
+                          numAlumnos: 1,
+                          dias: const [
+                            true,
+                            true,
+                            true,
+                            true,
+                            true,
+                            true,
+                            true
+                          ],
+                          refresh: (value) async => setState(() => refreshGrupos()),
+                      );
+                    },
+                  ),
+                ),
     );
   }
 }
