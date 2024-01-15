@@ -1,5 +1,6 @@
 import 'package:control_asistencias/data/db_principal.dart';
 import 'package:control_asistencias/data/modelos/grupos.dart';
+import 'package:sqflite/utils/utils.dart';
 
 class CtrlGrupos {
   // Operaciones CRUD con los grupos.
@@ -50,5 +51,13 @@ class CtrlGrupos {
       where: "${GrupoFields.idGrupo} = ?",
       whereArgs: [id],
     );
+  }
+
+  Future<int> countGrupo() async {
+    final db = await ControlAsistenciasDB.instance.database;
+    final int count =
+        firstIntValue(await db.rawQuery("SELECT COUNT (*) FROM $tableGrupo")) ??
+            0;
+    return count;
   }
 }
