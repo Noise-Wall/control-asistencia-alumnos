@@ -1,13 +1,14 @@
 import 'package:control_asistencias/paginas/pagina_principal.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-// funcion asíncrona para cargar Hive, una libreria para usar almacenamiento local.
 void main() async {
-  await Hive.initFlutter();
-  var box = await Hive.openBox('Asistencias');
-
+  // Carga archivo de variables ambientales, como hashes, contrasenas y otros.
+  // Por su naturaleza sensible, este archivo no se sube al GitHub.
+  // Si no tienen el archivo .env, pidanmelo.
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
-      home: PaginaPrincipal(),
+      home: const PaginaPrincipal(),
     );
   }
 }
