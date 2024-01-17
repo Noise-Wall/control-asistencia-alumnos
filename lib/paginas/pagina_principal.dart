@@ -1,8 +1,6 @@
 import 'package:control_asistencias/data/db_principal.dart';
 import 'package:flutter/material.dart';
 
-import '../data/modelos/grupos.dart';
-
 import 'pagina_principal/grupos.dart';
 import 'pagina_principal/horarios.dart';
 import 'pagina_principal/inicio.dart';
@@ -16,14 +14,15 @@ class PaginaPrincipal extends StatefulWidget {
 
 class _PaginaPrincipalState extends State<PaginaPrincipal> {
   ThemeMode _themeMode = ThemeMode.system;
+
   // el index de la pagina seleccionada. para llevar rastreo de pagina actual.
   int _paginaSeleccionada = 0;
 
   // lista de paginas de la barra de navegacion inferior.
   final List _paginas = [
-    Inicio(),
+    const Inicio(),
     Grupos(),
-    Horarios(),
+    const Horarios(),
   ];
 
   // inicializacion de la base de datos
@@ -45,6 +44,12 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
       appBar: AppBar(
         title: const Text("Página principal"),
         centerTitle: true,
+        backgroundColor: Colors.indigo,
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 22,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       // Basicamente tododentro del Drawer es temporal.
       // A futuro se cambiará a NavigationDrawer, al igual que con el

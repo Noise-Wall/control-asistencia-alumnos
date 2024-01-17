@@ -18,11 +18,10 @@ class _GruposState extends State<Grupos> {
   final ScrollController _barra = ScrollController();
   bool isLoading = false;
   late List<Grupo> grupos;
-  final ctrlGrupo = CtrlGrupos();
 
   Future refreshGrupos() async {
     setState(() => isLoading = true);
-    grupos = await ctrlGrupo.readGrupoAll();
+    grupos = await CtrlGrupos().readGrupoAll();
     if (dotenv.maybeGet("DEV") != null) {
       print("not null");
       if (grupos.isEmpty) {
@@ -31,7 +30,7 @@ class _GruposState extends State<Grupos> {
           nombreMateria: "Materia de prueba",
           turno: "Matutino",
         );
-        ctrlGrupo.createGrupo(grupo);
+        CtrlGrupos().createGrupo(grupo);
       }
     } else {
       print("null");
@@ -53,9 +52,9 @@ class _GruposState extends State<Grupos> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => GrupoAdd(),
+              builder: (gruposContext) => GrupoAdd(),
             ),
-          ).then((value) => setState(() => refreshGrupos()));
+          ).then((value) => refreshGrupos());
         },
         backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),
@@ -88,7 +87,7 @@ class _GruposState extends State<Grupos> {
                             true,
                             true
                           ],
-                          refresh: (value) async => setState(() => refreshGrupos()),
+                          refresh: (value) =>  refreshGrupos(),
                       );
                     },
                   ),

@@ -25,10 +25,13 @@ class CtrlHorarios {
     }
   }
 
-  // cambiar a horarios per grupo
-  Future<List<Horario>> readHorarioAll() async {
+  Future<List<Horario>> readHorarioFromGrupo(int idGrupo) async {
     final db = await ControlAsistenciasDB.instance.database;
-    final result = await db.query(tableHorarios);
+    final result = await db.query(
+        tableHorarios,
+        where: "${HorarioFields.idGrupo} + ?",
+        whereArgs: [idGrupo],
+    );
     return result.map((json) => Horario.fromJson(json)).toList();
   }
 

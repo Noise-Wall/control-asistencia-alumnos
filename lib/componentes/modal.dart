@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Future Modal(BuildContext context, Widget contenido) {
+Future Modal(BuildContext context, Widget contenido, [bool dismissable = false]) {
   return showModalBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
@@ -8,9 +8,9 @@ Future Modal(BuildContext context, Widget contenido) {
       ),
     ),
     // isDismissable false para que la confirmacion para borrar sea mas segura.
-    isDismissible: false,
+    isDismissible: dismissable,
     context: context,
-    builder: (context) => Container(
+    builder: (modalContext) => Container(
       height: 350,
       padding: const EdgeInsets.all(25),
       child: contenido,

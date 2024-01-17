@@ -16,7 +16,9 @@ class GrupoCarta extends StatelessWidget {
   final List<bool> dias;
   final Future<void> Function(dynamic) refresh;
 
-  const GrupoCarta({
+  bool _confirmarBorrado = false;
+
+  GrupoCarta({
     super.key,
     required this.idGrupo,
     required this.nombreGrupo,
@@ -29,7 +31,7 @@ class GrupoCarta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _confirmarBorrado = false;
+
 
     return Container(
       padding: const EdgeInsets.all(25.0),
