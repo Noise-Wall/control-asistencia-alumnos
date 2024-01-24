@@ -3,6 +3,7 @@ import 'package:control_asistencias/componentes/boton.dart';
 import 'package:control_asistencias/componentes/modal.dart';
 import 'package:control_asistencias/data/controladores/ctrl_horarios.dart';
 import 'package:control_asistencias/data/modelos/horarios.dart';
+import 'package:control_asistencias/paginas/pagina_principal/horarios_add.dart';
 import 'package:flutter/material.dart';
 
 class HorariosView extends StatefulWidget {
@@ -15,7 +16,16 @@ class HorariosView extends StatefulWidget {
 }
 
 class _HorariosViewState extends State<HorariosView> {
+  final ScrollController _barra = ScrollController();
   late List<Horario> _horarios;
+  final List<String> _dias = [
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado"
+  ];
   bool isLoading = false;
 
   Future getHorarios() async {
@@ -27,76 +37,55 @@ class _HorariosViewState extends State<HorariosView> {
   @override
   void initState() {
     super.initState();
-    getHorarios().then((value) => print(_horarios.isEmpty));
+    getHorarios();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Horarios de {grupo} "),
-          centerTitle: true,
-        ),
-        body: Container(
-          child: isLoading
-              ? const AnimCarga()
-              : _horarios.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Este grupo no tiene horarios."),
-                          Container(height: 10),
-                          Boton(
-                              texto: "Agregar horario",
-                              onPresionado: () => Modal(
-                                    context,
-                                    ContenidoModal(),
-                                    true,
-                                  ))
-                        ],
-                      ),
-                      // child: Text("Este grupo no tiene horarios."),
-                    )
-                  : const Text("Lista de horarios"),
-        ));
-  }
-}
-
-class ContenidoModal extends StatefulWidget {
-  ContenidoModal({super.key});
-
-  @override
-  State<ContenidoModal> createState() => _ContenidoModalState();
-}
-
-class _ContenidoModalState extends State<ContenidoModal> {
-  final TimeOfDay _hora = TimeOfDay.now();
-
-  Future<void> _seleccionarHora(BuildContext context) async {
-    TimeOfDay? seleccion = await showTimePicker(
-        context: context,
-        initialTime: _hora, builder: (BuildContext context, Widget? child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-            child: child!,
-          );
-        });
-
-    if (seleccion != null && seleccion != _hora) {
-      setState(() {
-        seleccion = _hora;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Text("true"),
-        ],
+      appBar: AppBar(
+        title: const Text("Horarios"),
+        centerTitle: true,
+      ),
+      body: Container(
+        child: isLoading
+            ? const AnimCarga()
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _horarios.isEmpty
+                        ? const Text("Este grupo no tiene horarios.")
+                        // : const Text("Lista de horarios"),
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            controller: _barra,
+                            itemCount: _horarios.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                        "${_dias[_horarios[index].dia]}, a las ${_horarios[index].hora}"),
+                                  ],
+                                ),
+                              );
+                            }),
+                    Container(height: 10),
+                    Boton(
+                      texto: "Agregar horario",
+                      onPresionado: () => Modal(
+                        context,
+                        HorariosAdd(
+                          idGrupo: widget.id,
+                        ),
+                        true,
+                      ).then((value) => getHorarios()),
+                    ),
+                  ],
+                ),
+                // child: Text("Este grupo no tiene horarios."),
+              ),
       ),
     );
   }
