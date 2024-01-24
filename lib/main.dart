@@ -11,13 +11,12 @@ void main() async {
   // Si no tienen el archivo .env, pidanmelo.
   if (Platform.isWindows || Platform.isLinux) {
    sqfliteFfiInit();
-  }
 
-  databaseFactory = databaseFactoryFfi;
+   databaseFactory = databaseFactoryFfi;
+  }
 
   await dotenv.load(fileName: ".env");
   runApp(const MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
