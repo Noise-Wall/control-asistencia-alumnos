@@ -11,7 +11,8 @@ Future Modal(BuildContext context, Widget contenido, [bool dismissable = false])
     isDismissible: dismissable,
     context: context,
     builder: (modalContext) => Container(
-      height: 350,
+      width: MediaQuery.of(modalContext).size.width * 0.9,
+      height: MediaQuery.of(modalContext).size.height * 0.5,
       padding: const EdgeInsets.all(25),
       child: contenido,
     ),
