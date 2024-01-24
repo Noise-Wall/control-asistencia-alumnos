@@ -31,6 +31,7 @@ class ControlAsistenciasDB {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     const textType = 'TEXT NOT NULL';
     const intType = 'INTEGER NOT NULL';
+    const doubleType = 'DOUBLE(2, 2) NOT NULL';
 
     // creacion de tabla Grupos.
     await db.execute('''
@@ -70,7 +71,7 @@ class ControlAsistenciasDB {
        ${HorarioFields.idHorario} $idType,
        ${HorarioFields.idGrupo} $intType,
        ${HorarioFields.dia} $intType,
-       ${HorarioFields.hora} $intType,
+       ${HorarioFields.hora} $doubleType,
        FOREIGN KEY (${HorarioFields.idGrupo}) REFERENCES $tableGrupo (${GrupoFields.idGrupo})
        ON DELETE CASCADE
     ) 
