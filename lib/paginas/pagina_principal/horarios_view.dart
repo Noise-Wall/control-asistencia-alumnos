@@ -34,6 +34,19 @@ class _HorariosViewState extends State<HorariosView> {
     setState(() => isLoading = false);
   }
 
+  String convertHora(double horario) {
+    int hora = horario.floor();
+    int minutos = ((horario - hora) * 60).round();
+    TimeOfDay tiempo = TimeOfDay(hour: horario.floor(), minute: minutos);
+
+    return "${hora <= 9 ? '0' : ''}${hora}:${minutos}${minutos <= 9 ? '0' : ''}";
+  }
+
+  TimeOfDay getTimeOfDay(double horario) {
+    int minutos = ((horario - horario.floor()) * 60).round();
+    return TimeOfDay(hour: horario.floor(), minute: minutos);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -63,11 +76,44 @@ class _HorariosViewState extends State<HorariosView> {
                             itemCount: _horarios.length,
                             itemBuilder: (context, index) {
                               return Container(
-                                child: Row(
-                                  children: [
-                                    Text(
-                                        "${_dias[_horarios[index].dia]}, a las ${_horarios[index].hora}"),
-                                  ],
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 25, horizontal: 50),
+                                child: InkWell(
+                                  onTap: () => Modal(
+                                    context,
+                                    HorariosAdd(
+                                      idGrupo: widget.id,
+                                      hora: getTimeOfDay(_horarios[index].hora),
+                                      dia: _horarios[index].dia,
+                                    ),
+                                    true,
+                                  ).then((value) => getHorarios()),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.indigoAccent,
+                                      border: Border.all(
+                                          color: Colors.indigo, width: 2.0),
+                                      borderRadius: BorderRadius.circular(12),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          spreadRadius: 2,
+                                          blurRadius: 2,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "${_dias[_horarios[index].dia]}, a las ${convertHora(_horarios[index].hora)}",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               );
                             }),
