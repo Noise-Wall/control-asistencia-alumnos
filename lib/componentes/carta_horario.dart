@@ -4,8 +4,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../data/modelos/horarios.dart';
 
 class CartaHorario extends StatelessWidget {
-  final nombreGrupo;
-  final nombreMateria;
+  final String nombreGrupo;
+  final String nombreMateria;
   List<Horario>? horarios = [];
 
   // List<Horario> horarios = [
@@ -32,7 +32,7 @@ class CartaHorario extends StatelessWidget {
     for (int i = 0; i < 6; i++) {
       _dias.add(getDias(i));
     }
-    print(_dias.join(", "));
+    // print(_dias.join(", "));
   }
 
   // List<Horario> pruebas = [

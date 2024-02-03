@@ -60,7 +60,7 @@ class _HorariosAddState extends State<HorariosAdd> {
     super.initState();
     setState(() {
       _hora = widget.hora ?? TimeOfDay.now();
-      widget.dia = 0;
+      widget.dia = widget.dia ?? 0;
     });
   }
 

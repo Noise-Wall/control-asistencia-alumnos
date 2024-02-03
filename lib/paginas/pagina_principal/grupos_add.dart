@@ -73,7 +73,6 @@ class _GrupoAddState extends State<GrupoAdd> {
         title: const Text("Añadir grupo"),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 35.0),
         child: Form(

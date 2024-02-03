@@ -47,7 +47,7 @@ class _HorariosState extends State<Horarios> {
       body: isLoading
           ? const AnimCarga()
           : horarios.isEmpty
-          ? const Text("No hay grupos. Agregue grupos para ver horarios.")
+          ? const Center(child: Text("No hay grupos. Agregue grupos para ver horarios."))
           : Scrollbar(
         thumbVisibility: true,
         controller: _barra,
@@ -68,7 +68,9 @@ class _HorariosState extends State<Horarios> {
               },
               child: CartaHorario(
                   nombreGrupo: grupos[index].nombreGrupo,
-                  nombreMateria: grupos[index].nombreMateria),
+                  nombreMateria: grupos[index].nombreMateria,
+                  horarios: horarios[index],
+              ),
             );
             // return Column(
             //   children: [
