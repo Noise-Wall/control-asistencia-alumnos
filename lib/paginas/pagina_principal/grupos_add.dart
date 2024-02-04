@@ -141,21 +141,23 @@ class _GrupoAddState extends State<GrupoAdd> {
                 ],
               ),
               // fila de botones
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Boton(
                     texto: "Guardar",
                     onPresionado: crearEditarGrupo,
                   ),
+                  SizedBox(height: 12), // Espacio entre los botones
                   Boton(
                     texto: "Cancelar",
-                    onPresionado: Navigator
-                        .of(context)
-                        .pop,
+                    onPresionado: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
                 ],
               )
+
             ],
           ),
         ),
