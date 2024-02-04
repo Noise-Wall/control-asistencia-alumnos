@@ -52,8 +52,9 @@ class GrupoCarta extends StatelessWidget {
                 ),
               ).then(refresh),
               icon: Icons.edit_rounded,
-              backgroundColor: Colors.cyan.shade300,
-              borderRadius: BorderRadius.circular(12),
+              backgroundColor: const Color.fromRGBO(57, 73, 171, 1),
+
+              borderRadius: BorderRadius.circular(15),
             ),
             SlidableAction(
               onPressed: (contexto) => Modal(
