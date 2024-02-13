@@ -19,6 +19,7 @@ dependencies:
   sqlite3_flutter_libs: any
   path:
   flutter_dotenv:
+  adaptive_theme: ^3.6.0
 
 
 dev_dependencies:

@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:control_asistencias/data/db_principal.dart';
 import 'package:flutter/material.dart';
 
@@ -13,10 +14,9 @@ class PaginaPrincipal extends StatefulWidget {
 }
 
 class _PaginaPrincipalState extends State<PaginaPrincipal> {
-  ThemeMode _themeMode = ThemeMode.system;
-
   // el index de la pagina seleccionada. para llevar rastreo de pagina actual.
   int _paginaSeleccionada = 0;
+  late bool _temaClaro;
 
   // lista de paginas de la barra de navegacion inferior.
   final List _paginas = [
@@ -25,10 +25,19 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     const Horarios(),
   ];
 
+  void getTema() async {
+    final tema = await AdaptiveTheme.getThemeMode() == AdaptiveThemeMode.light;
+
+    setState(() {
+      _temaClaro = tema;
+    });
+  }
+
   // inicializacion de la base de datos
   @override
   void initState() {
     super.initState();
+    getTema();
   }
 
   // cierra la base de datos al cerrar app
@@ -85,11 +94,16 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(ThemeMode.system == ThemeMode.dark
+              leading: Icon(_temaClaro
                   ? Icons.light_mode_rounded
                   : Icons.dark_mode_rounded),
               title: const Text('Cambiar tema'),
-              onTap: () {},
+              onTap: () {
+                _temaClaro
+                    ? AdaptiveTheme.of(context).setDark()
+                    : AdaptiveTheme.of(context).setLight();
+                getTema();
+              },
             ),
           ],
         ),
