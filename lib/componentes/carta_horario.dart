@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -6,6 +7,7 @@ import '../data/modelos/horarios.dart';
 class CartaHorario extends StatelessWidget {
   final String nombreGrupo;
   final String nombreMateria;
+
   List<Horario>? horarios = [];
 
   // List<Horario> horarios = [
@@ -41,11 +43,12 @@ class CartaHorario extends StatelessWidget {
   //   Horario(idGrupo: 3, dia: 5, hora: 1),
   // ];
 
-  TextStyle letraDia(condicion) {
+  TextStyle letraDia(condicion, contexto) {
     return TextStyle(
       fontSize: 22.0,
       fontWeight: FontWeight.bold,
-      color: condicion ? Colors.indigo : Colors.black12,
+      color: condicion ? Colors.indigo : 
+      AdaptiveTheme.of(contexto).mode == AdaptiveThemeMode.light ? Colors.black12 : Colors.white24,
     );
   }
 
@@ -69,7 +72,9 @@ class CartaHorario extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AdaptiveTheme.of(context).mode == AdaptiveThemeMode.light
+                ? Colors.white
+                : null,
             border: Border.all(color: Colors.indigo, width: 2.0),
             borderRadius: BorderRadius.circular(12),
             boxShadow: const [
@@ -106,19 +111,16 @@ class CartaHorario extends StatelessWidget {
                     horarios == null
                         ? const Text(
                             "No hay horarios.",
-                            style: TextStyle(
-                              color: Colors.black26,
-                            ),
                           )
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("L", style: letraDia(_dias?[0])),
-                              Text("M", style: letraDia(_dias?[1])),
-                              Text("M", style: letraDia(_dias?[2])),
-                              Text("J", style: letraDia(_dias?[3])),
-                              Text("V", style: letraDia(_dias?[4])),
-                              Text("S", style: letraDia(_dias?[5])),
+                              Text("L", style: letraDia(_dias[0], context)),
+                              Text("M", style: letraDia(_dias[1], context)),
+                              Text("M", style: letraDia(_dias[2], context)),
+                              Text("J", style: letraDia(_dias[3], context)),
+                              Text("V", style: letraDia(_dias[4], context)),
+                              Text("S", style: letraDia(_dias[5], context)),
                             ],
                           ),
                   ],

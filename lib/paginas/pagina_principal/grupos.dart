@@ -55,12 +55,15 @@ class _GruposState extends State<Grupos> {
           ).then((value) => refreshGrupos());
         },
         backgroundColor: Colors.indigo,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       body: isLoading
           ? const AnimCarga()
           : grupos.isEmpty
-              ? const Text("No hay grupos")
+              ? const Center(child: Text("No hay grupos"))
               : Scrollbar(
                   thumbVisibility: true,
                   controller: _barra,
@@ -71,21 +74,13 @@ class _GruposState extends State<Grupos> {
                     itemCount: grupos.length,
                     itemBuilder: (context, index) {
                       return GrupoCarta(
-                          idGrupo: grupos[index].idGrupo ?? 0,
-                          nombreGrupo: grupos[index].nombreGrupo,
-                          nombreMateria: grupos[index].nombreMateria,
-                          turno: grupos[index].turno,
-                          numAlumnos: 1,
-                          dias: const [
-                            true,
-                            true,
-                            true,
-                            true,
-                            true,
-                            true,
-                            true
-                          ],
-                          refresh: (value) =>  refreshGrupos(),
+                        idGrupo: grupos[index].idGrupo ?? 0,
+                        nombreGrupo: grupos[index].nombreGrupo,
+                        nombreMateria: grupos[index].nombreMateria,
+                        turno: grupos[index].turno,
+                        numAlumnos: 1,
+                        dias: const [true, true, true, true, true, true, true],
+                        refresh: (value) => refreshGrupos(),
                       );
                     },
                   ),

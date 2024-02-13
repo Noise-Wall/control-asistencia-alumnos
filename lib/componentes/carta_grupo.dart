@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:control_asistencias/componentes/boton.dart';
 import 'package:control_asistencias/componentes/modal.dart';
 import 'package:control_asistencias/data/modelos/grupos.dart';
@@ -31,8 +32,6 @@ class GrupoCarta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Container(
       padding: const EdgeInsets.all(25.0),
       child: Slidable(
@@ -53,7 +52,6 @@ class GrupoCarta extends StatelessWidget {
               ).then(refresh),
               icon: Icons.edit_rounded,
               backgroundColor: const Color.fromRGBO(57, 73, 171, 1),
-
               borderRadius: BorderRadius.circular(15),
             ),
             SlidableAction(
@@ -115,7 +113,9 @@ Presione \"Sí, borrar\" dos veces para borrar el grupo.
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AdaptiveTheme.of(context).mode == AdaptiveThemeMode.light
+                ? Colors.white
+                : null,
             border: Border.all(color: Colors.indigo, width: 2.0),
             borderRadius: BorderRadius.circular(12),
             boxShadow: const [
@@ -162,8 +162,8 @@ Presione \"Sí, borrar\" dos veces para borrar el grupo.
                         "$numAlumnos alumnos, ${dias.fold(0, (previous, element) => element == true ? previous + 1 : previous)} dias a la semana",
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          color: Colors.black26,
-                        )),
+                            // color: Colors.black26,
+                            )),
                   ],
                 ),
               ),
