@@ -23,7 +23,6 @@ class _GruposState extends State<Grupos> {
     setState(() => isLoading = true);
     grupos = await CtrlGrupos().readGrupoAll();
     if (dotenv.maybeGet("DEV") != null) {
-      print("not null");
       if (grupos.isEmpty) {
         const grupo = Grupo(
           nombreGrupo: "Grupo de prueba",
@@ -31,17 +30,16 @@ class _GruposState extends State<Grupos> {
           turno: "Matutino",
         );
         CtrlGrupos().createGrupo(grupo);
+        grupos = await CtrlGrupos().readGrupoAll();
       }
-    } else {
-      print("null");
     }
     setState(() => isLoading = false);
   }
 
   @override
   void initState() {
-    super.initState();
     refreshGrupos();
+    super.initState();
   }
 
   @override
