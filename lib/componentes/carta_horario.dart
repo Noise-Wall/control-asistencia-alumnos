@@ -1,4 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:control_asistencias/componentes/confirmar_borrado.dart';
+import 'package:control_asistencias/componentes/modal.dart';
+import 'package:control_asistencias/data/controladores/ctrl_horarios.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -7,6 +10,7 @@ import '../data/modelos/horarios.dart';
 class CartaHorario extends StatelessWidget {
   final String nombreGrupo;
   final String nombreMateria;
+  final Future<void> Function(dynamic) refresh;
 
   List<Horario>? horarios = [];
 
@@ -22,6 +26,7 @@ class CartaHorario extends StatelessWidget {
     required this.nombreGrupo,
     required this.nombreMateria,
     this.horarios,
+    required this.refresh,
   });
 
   bool getDias(int dia) {
@@ -47,8 +52,11 @@ class CartaHorario extends StatelessWidget {
     return TextStyle(
       fontSize: 22.0,
       fontWeight: FontWeight.bold,
-      color: condicion ? Colors.indigo : 
-      AdaptiveTheme.of(contexto).mode == AdaptiveThemeMode.light ? Colors.black12 : Colors.white24,
+      color: condicion
+          ? Colors.indigo
+          : AdaptiveTheme.of(contexto).mode == AdaptiveThemeMode.light
+              ? Colors.black12
+              : Colors.white24,
     );
   }
 
@@ -62,9 +70,19 @@ class CartaHorario extends StatelessWidget {
           motion: const ScrollMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) => print("pressed"),
+              onPressed: horarios!.isNotEmpty
+                  ? (contexto) => Modal(
+                          contexto,
+                          ConfirmarBorrado(
+                              accion: CtrlHorarios()
+                                  .deleteHorarioFromGrupo(horarios![0].idGrupo),
+                              objeto: "horario",
+                              contextoInicial: context))
+                      .then(refresh)
+                  : (contexto) {},
               icon: Icons.delete_rounded,
-              backgroundColor: Colors.red.shade400,
+              backgroundColor:
+                  horarios!.isNotEmpty ? Colors.red.shade400 : Colors.white38,
               borderRadius: BorderRadius.circular(12),
             ),
           ],

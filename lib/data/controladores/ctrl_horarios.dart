@@ -29,7 +29,7 @@ class CtrlHorarios {
     final db = await ControlAsistenciasDB.instance.database;
     final result = await db.query(
         tableHorarios,
-        where: "${HorarioFields.idGrupo} + ?",
+        where: "${HorarioFields.idGrupo} = ?",
         whereArgs: [idGrupo],
     );
     return result.map((json) => Horario.fromJson(json)).toList();
@@ -46,5 +46,15 @@ class CtrlHorarios {
     final db = await ControlAsistenciasDB.instance.database;
     return db.delete(tableHorarios,
         where: "${HorarioFields.idHorario} = ?", whereArgs: [id]);
+  }
+
+  Future<int> deleteHorarioFromGrupo(int idGrupo) async {
+    print('Id is $idGrupo');
+    final db = await ControlAsistenciasDB.instance.database;
+    return db.delete(
+        tableHorarios,
+        where: "${HorarioFields.idGrupo} = ?",
+        whereArgs: [idGrupo],
+    );
   }
 }

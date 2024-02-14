@@ -1,5 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:control_asistencias/componentes/boton.dart';
+import 'package:control_asistencias/componentes/confirmar_borrado.dart';
 import 'package:control_asistencias/componentes/modal.dart';
 import 'package:control_asistencias/data/modelos/grupos.dart';
 import 'package:control_asistencias/data/controladores/ctrl_grupos.dart';
@@ -16,8 +16,6 @@ class GrupoCarta extends StatelessWidget {
   final int numAlumnos;
   final List<bool> dias;
   final Future<void> Function(dynamic) refresh;
-
-  bool _confirmarBorrado = false;
 
   GrupoCarta({
     super.key,
@@ -56,54 +54,12 @@ class GrupoCarta extends StatelessWidget {
             ),
             SlidableAction(
               onPressed: (contexto) => Modal(
-                  contexto,
-                  Column(
-                    children: [
-                      const Text(
-                        "ADVERTENCIA",
-                        style: TextStyle(
-                          color: Colors.redAccent,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 25,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      const Text(
-                        '''Esta acción eliminará el grupo y toda la información que contenga.
-¿Realmente desea borrar el grupo?
-Presione \"Sí, borrar\" dos veces para borrar el grupo.
-                        ''',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Boton(
-                            texto: "Sí, borrar",
-                            onPresionado: () {
-                              if (!_confirmarBorrado) {
-                                _confirmarBorrado = true;
-                              } else {
-                                _confirmarBorrado = false;
-                                CtrlGrupos().deleteGrupo(idGrupo);
-                                Navigator.of(context).pop();
-                              }
-                            },
-                            colorBoton: Colors.red,
-                          ),
-                          Boton(
-                              texto: "Cancelar",
-                              onPresionado: () {
-                                _confirmarBorrado = false;
-                                Navigator.of(context).pop();
-                              }),
-                        ],
-                      ),
-                    ],
-                  )).then(refresh),
+                      contexto,
+                      ConfirmarBorrado(
+                          accion: CtrlGrupos().deleteGrupo(idGrupo),
+                          objeto: "grupo",
+                          contextoInicial: context))
+                  .then(refresh),
               icon: Icons.delete_rounded,
               backgroundColor: Colors.red.shade400,
               borderRadius: BorderRadius.circular(12),
