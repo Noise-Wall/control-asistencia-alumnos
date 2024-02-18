@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-Future Modal(BuildContext context, Widget contenido, [bool dismissable = false]) {
+final ScrollController scrollController = ScrollController();
+
+Future Modal(BuildContext context, Widget contenido,
+    [bool dismissable = false]) {
   return showModalBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
@@ -14,7 +17,12 @@ Future Modal(BuildContext context, Widget contenido, [bool dismissable = false])
       width: MediaQuery.of(modalContext).size.width * 0.9,
       height: MediaQuery.of(modalContext).size.height * 0.5,
       padding: const EdgeInsets.all(25),
-      child: contenido,
+      child: SingleChildScrollView(
+          controller: scrollController,
+          child: Scrollbar(
+              controller: scrollController,
+              thumbVisibility: true,
+              child: contenido)),
     ),
   );
 }

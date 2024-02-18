@@ -1,4 +1,5 @@
 import 'package:control_asistencias/componentes/anim_carga.dart';
+import 'package:control_asistencias/componentes/scrollbar.dart';
 import 'package:control_asistencias/data/controladores/ctrl_grupos.dart';
 import 'package:control_asistencias/data/modelos/grupos.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ class Grupos extends StatefulWidget {
 }
 
 class _GruposState extends State<Grupos> {
-  final ScrollController _barra = ScrollController();
   bool isLoading = false;
   late List<Grupo> grupos;
 
@@ -50,7 +50,7 @@ class _GruposState extends State<Grupos> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (gruposContext) => GrupoAdd(),
+              builder: (gruposContext) => const GrupoAdd(),
             ),
           ).then((value) => refreshGrupos());
         },
@@ -64,25 +64,16 @@ class _GruposState extends State<Grupos> {
           ? const AnimCarga()
           : grupos.isEmpty
               ? const Center(child: Text("No hay grupos"))
-              : Scrollbar(
-                  thumbVisibility: true,
-                  controller: _barra,
-                  thickness: 7,
-                  radius: const Radius.circular(20),
-                  child: ListView.builder(
-                    controller: _barra,
-                    itemCount: grupos.length,
-                    itemBuilder: (context, index) {
-                      return GrupoCarta(
-                        idGrupo: grupos[index].idGrupo ?? 0,
-                        nombreGrupo: grupos[index].nombreGrupo,
-                        nombreMateria: grupos[index].nombreMateria,
-                        turno: grupos[index].turno,
-                        numAlumnos: 1,
-                        dias: const [true, true, true, true, true, true, true],
-                        refresh: (value) => refreshGrupos(),
-                      );
-                    },
+              : BarraDesplazo(
+                  items: grupos.length,
+                  itemABuildear: (context, index) => GrupoCarta(
+                    idGrupo: grupos[index].idGrupo ?? 0,
+                    nombreGrupo: grupos[index].nombreGrupo,
+                    nombreMateria: grupos[index].nombreMateria,
+                    turno: grupos[index].turno,
+                    numAlumnos: 1,
+                    dias: const [true, true, true, true, true, true, true],
+                    refresh: (value) => refreshGrupos(),
                   ),
                 ),
     );

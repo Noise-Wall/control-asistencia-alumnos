@@ -1,6 +1,7 @@
 import 'package:control_asistencias/componentes/anim_carga.dart';
 import 'package:control_asistencias/componentes/boton.dart';
 import 'package:control_asistencias/componentes/modal.dart';
+import 'package:control_asistencias/data/controladores/ctrl_grupos.dart';
 import 'package:control_asistencias/data/controladores/ctrl_horarios.dart';
 import 'package:control_asistencias/data/modelos/horarios.dart';
 import 'package:control_asistencias/paginas/pagina_principal/horarios_add.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 class HorariosView extends StatefulWidget {
   final int id;
 
-  const HorariosView({super.key, required this.id});
+  const HorariosView({super.key, required this.id, });
 
   @override
   State<HorariosView> createState() => _HorariosViewState();
@@ -58,6 +59,9 @@ class _HorariosViewState extends State<HorariosView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Horarios"),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context, CtrlGrupos().readGrupoAll())),
         centerTitle: true,
       ),
       body: Container(
@@ -82,6 +86,7 @@ class _HorariosViewState extends State<HorariosView> {
                                   onTap: () => Modal(
                                     context,
                                     HorariosAdd(
+                                      idHorario: _horarios[index].idHorario,
                                       idGrupo: widget.id,
                                       hora: getTimeOfDay(_horarios[index].hora),
                                       dia: _horarios[index].dia,
@@ -104,7 +109,8 @@ class _HorariosViewState extends State<HorariosView> {
                                       ],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "${_dias[_horarios[index].dia]}, a las ${convertHora(_horarios[index].hora)}",

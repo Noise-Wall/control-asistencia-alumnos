@@ -18,8 +18,8 @@ class Boton extends StatelessWidget {
       onPressed: onPresionado,
       color: colorBoton ?? Colors.indigo,
       shape: const StadiumBorder(),
-      child: Text(texto),
       textColor: Colors.white,
+      child: Text(texto),
     );
   }
 }

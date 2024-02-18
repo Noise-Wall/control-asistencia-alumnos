@@ -53,7 +53,7 @@ class GrupoCarta extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             ),
             SlidableAction(
-              onPressed: (contexto) => Modal(
+              onPressed: (contexto) async => Modal(
                       contexto,
                       ConfirmarBorrado(
                           accion: CtrlGrupos().deleteGrupo(idGrupo),
