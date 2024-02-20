@@ -1,7 +1,10 @@
 import 'package:control_asistencias/componentes/anim_carga.dart';
+import 'package:control_asistencias/componentes/modal.dart';
 import 'package:control_asistencias/componentes/scrollbar.dart';
 import 'package:control_asistencias/data/controladores/ctrl_grupos.dart';
+import 'package:control_asistencias/data/controladores/ctrl_horarios.dart';
 import 'package:control_asistencias/data/modelos/grupos.dart';
+import 'package:control_asistencias/data/modelos/horarios.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -18,6 +21,7 @@ class Grupos extends StatefulWidget {
 class _GruposState extends State<Grupos> {
   bool isLoading = false;
   late List<Grupo> grupos;
+  List<int> horarios = [];
 
   Future refreshGrupos() async {
     setState(() => isLoading = true);
@@ -33,6 +37,9 @@ class _GruposState extends State<Grupos> {
         grupos = await CtrlGrupos().readGrupoAll();
       }
     }
+    for (final grupo in grupos) {
+      horarios.add(await CtrlHorarios().countHorarioFromGrupo(grupo.idGrupo!));
+    }
     setState(() => isLoading = false);
   }
 
@@ -47,12 +54,14 @@ class _GruposState extends State<Grupos> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (gruposContext) => const GrupoAdd(),
-            ),
-          ).then((value) => refreshGrupos());
+          Modal(context, const GrupoAdd(), true)
+              .then((value) => refreshGrupos());
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (gruposContext) => const GrupoAdd(),
+          //   ),
+          // ).then((value) => refreshGrupos());
         },
         backgroundColor: Colors.indigo,
         child: const Icon(
@@ -72,7 +81,7 @@ class _GruposState extends State<Grupos> {
                     nombreMateria: grupos[index].nombreMateria,
                     turno: grupos[index].turno,
                     numAlumnos: 1,
-                    dias: const [true, true, true, true, true, true, true],
+                    sesiones: horarios[index],
                     refresh: (value) => refreshGrupos(),
                   ),
                 ),

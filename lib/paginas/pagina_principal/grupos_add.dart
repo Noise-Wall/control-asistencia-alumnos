@@ -68,37 +68,50 @@ class _GrupoAddState extends State<GrupoAdd> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Añadir grupo"),
-        centerTitle: true,
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 35.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              // campo de grupo
-              TextFormField(
-                controller: _nombreGrupoCtrl,
-                decoration: const InputDecoration(
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: const Text("Añadir grupo"),
+    //     centerTitle: true,
+    //   ),
+    // body: Container(
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 35.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            // campo de grupo
+            TextFormField(
+              controller: _nombreGrupoCtrl,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.group),
+                border: UnderlineInputBorder(),
+                labelText: "Nombre del grupo:",
+                hintText: "e.g. LISI-4, LI-2...",
+              ),
+              validator: campoValidador,
+            ),
+            const SizedBox(height: 5.0),
+            // campo de materia
+            TextFormField(
+              controller: _nombreMateriaCtrl,
+              decoration: const InputDecoration(
+                  icon: Icon(Icons.subject),
                   border: UnderlineInputBorder(),
-                  labelText: "Nombre del grupo:",
-                  hintText: "e.g. LISI-4, LI-2...",
+                  labelText: "Materia:",
+                  hintText: "Nombre de la materia, e.g. Programación..."),
+              validator: campoValidador,
+            ),
+            const SizedBox(height: 20.0),
+            InputDecorator(
+              decoration: InputDecoration(
+                label: const Row(
+                  children: [Icon(Icons.brightness_4), Text("Turno")],
                 ),
-                validator: campoValidador,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
               ),
-              // campo de materia
-              TextFormField(
-                controller: _nombreMateriaCtrl,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: "Materia:",
-                    hintText: "Nombre de la materia, e.g. Programación..."),
-                validator: campoValidador,
-              ),
-              Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
@@ -140,28 +153,29 @@ class _GrupoAddState extends State<GrupoAdd> {
                   ),
                 ],
               ),
-              // fila de botones
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Boton(
-                    texto: "Guardar",
-                    onPresionado: crearEditarGrupo,
-                  ),
-                  SizedBox(height: 12), // Espacio entre los botones
-                  Boton(
-                    texto: "Cancelar",
-                    onPresionado: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              )
-
-            ],
-          ),
+            ),
+            const SizedBox(height: 10.0),
+            // fila de botones
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Boton(
+                  texto: "Guardar",
+                  onPresionado: crearEditarGrupo,
+                ),
+                const SizedBox(height: 12), // Espacio entre los botones
+                Boton(
+                  texto: "Cancelar",
+                  onPresionado: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
+    // );
   }
 }
