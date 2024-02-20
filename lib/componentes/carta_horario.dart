@@ -33,8 +33,8 @@ class CartaHorario extends StatelessWidget {
     for (int i = 0; i < 6; i++) {
       _dias.add(getDias(i));
     }
-  }  
-  
+  }
+
   TextStyle letraDia(condicion, contexto) {
     return TextStyle(
       fontSize: 22.0,
@@ -72,7 +72,12 @@ class CartaHorario extends StatelessWidget {
                             ConfirmarBorrado(
                                 accion: CtrlHorarios().deleteHorarioFromGrupo(
                                     horarios![0].idGrupo),
-                                objeto: "horario",
+                                texto:
+                                    '''Esta acción eliminará los horarios que tiene actualmente este grupo.
+No borrará el grupo.
+¿Desea continuar?
+Presione "Sí, borrar" dos veces para borrar los horarios.
+''',
                                 contextoInicial: context))
                         .then(refresh)
                     : (contexto) {},
@@ -122,19 +127,25 @@ class CartaHorario extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.indigo.shade600,
                           )),
-                      horarios == null
+                      horarios!.isEmpty
                           ? const Text(
                               "No hay horarios.",
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                if (MediaQuery.of(context).size.width > 250)
+                                  const Icon(Icons.calendar_month),
                                 Text("L", style: letraDia(_dias[0], context)),
                                 Text("M", style: letraDia(_dias[1], context)),
                                 Text("M", style: letraDia(_dias[2], context)),
                                 Text("J", style: letraDia(_dias[3], context)),
                                 Text("V", style: letraDia(_dias[4], context)),
                                 Text("S", style: letraDia(_dias[5], context)),
+                                if (MediaQuery.of(context).size.width > 275)
+                                  Container(
+                                      constraints:
+                                          const BoxConstraints(maxWidth: 50.0))
                               ],
                             ),
                     ],

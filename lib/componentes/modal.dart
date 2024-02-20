@@ -14,8 +14,10 @@ Future Modal(BuildContext context, Widget contenido,
     isDismissible: dismissable,
     context: context,
     builder: (modalContext) => Container(
-      width: MediaQuery.of(modalContext).size.width * 0.9,
-      height: MediaQuery.of(modalContext).size.height * 0.5,
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(modalContext).size.width * 0.9,
+        maxHeight: MediaQuery.of(modalContext).size.height * 0.5,
+      ),
       padding: const EdgeInsets.all(25),
       child: SingleChildScrollView(
           controller: scrollController,

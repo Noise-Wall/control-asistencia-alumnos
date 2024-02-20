@@ -4,13 +4,13 @@ import "boton.dart";
 
 class ConfirmarBorrado extends StatelessWidget {
   final Future accion;
-  final String objeto;
+  final String texto;
   final BuildContext contextoInicial;
 
   ConfirmarBorrado(
       {super.key,
       required this.accion,
-      required this.objeto,
+      required this.texto,
       required this.contextoInicial});
 
   bool _confirmarBorrado = false;
@@ -29,10 +29,7 @@ class ConfirmarBorrado extends StatelessWidget {
           textAlign: TextAlign.left,
         ),
         Text(
-          '''Esta acción eliminará el $objeto y toda la información que contenga.
-¿Realmente desea borrar el $objeto?
-Presione "Sí, borrar" dos veces para borrar el $objeto.
-                        ''',
+          texto,
           style: const TextStyle(
             fontSize: 20,
           ),
