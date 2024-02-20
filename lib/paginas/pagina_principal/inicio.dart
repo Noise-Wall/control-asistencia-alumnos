@@ -1,6 +1,9 @@
 import 'package:control_asistencias/componentes/anim_carga.dart';
 import 'package:control_asistencias/data/controladores/ctrl_grupos.dart';
+import 'package:control_asistencias/data/controladores/ctrl_horarios.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class Inicio extends StatefulWidget {
   const Inicio({super.key});
@@ -14,16 +17,20 @@ class _InicioState extends State<Inicio> {
   final _ctrlGrupo = CtrlGrupos();
 
   int numGrupos = 0;
+  int numSesiones = 0;
+  String hoy = DateFormat('EEEE').format(DateTime.now());
 
   Future getStats() async {
     setState(() => isLoading = true);
     numGrupos = await _ctrlGrupo.countGrupo();
+    numSesiones = await CtrlHorarios().countHorarioAll();
     setState(() => isLoading = false);
   }
 
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting();
     getStats();
   }
 
@@ -57,11 +64,17 @@ class _InicioState extends State<Inicio> {
                     child: Column(
                       children: [
                         Text(
-                            "Actualmente tiene $numGrupos ${numGrupos != 1 ? "grupos" : "grupo"}."),
-                        Text("Actualmente imparte (HORAS) horas de clase."),
+                          "Actualmente tiene $numGrupos ${numGrupos != 1 ? "grupos" : "grupo"}.",
+                          softWrap: true,
+                        ),
+                        Text(
+                          "Actualmente imparte $numSesiones sesiones a la semana.",
+                          softWrap: true,
+                        ),
                       ],
                     ),
                   ),
+                  Text("Hoy es ${hoy}."),
                 ],
               ),
             ),

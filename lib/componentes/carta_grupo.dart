@@ -14,7 +14,7 @@ class GrupoCarta extends StatelessWidget {
   final String turno;
 
   final int numAlumnos;
-  final List<bool> dias;
+  final int? sesiones;
   final Future<void> Function(dynamic) refresh;
 
   GrupoCarta({
@@ -24,7 +24,7 @@ class GrupoCarta extends StatelessWidget {
     required this.nombreMateria,
     required this.turno,
     required this.numAlumnos,
-    required this.dias,
+    this.sesiones,
     required this.refresh,
   });
 
@@ -37,16 +37,15 @@ class GrupoCarta extends StatelessWidget {
           motion: const ScrollMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) => Navigator.push(
+              onPressed: (context) async => Modal(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => GrupoAdd(
-                      grupo: Grupo(
-                          idGrupo: idGrupo,
-                          nombreGrupo: nombreGrupo,
-                          nombreMateria: nombreMateria,
-                          turno: turno)),
-                ),
+                GrupoAdd(
+                    grupo: Grupo(
+                        idGrupo: idGrupo,
+                        nombreGrupo: nombreGrupo,
+                        nombreMateria: nombreMateria,
+                        turno: turno)),
+                true,
               ).then(refresh),
               icon: Icons.edit_rounded,
               backgroundColor: const Color.fromRGBO(57, 73, 171, 1),
@@ -57,7 +56,11 @@ class GrupoCarta extends StatelessWidget {
                       contexto,
                       ConfirmarBorrado(
                           accion: CtrlGrupos().deleteGrupo(idGrupo),
-                          objeto: "grupo",
+                          texto:
+                              '''Esta acción eliminará el grupo y toda la información que contenga.
+¿Realmente desea borrar el grupo?
+Presione "Sí, borrar" dos veces para borrar el grupo.
+''',
                           contextoInicial: context))
                   .then(refresh),
               icon: Icons.delete_rounded,
@@ -105,21 +108,47 @@ class GrupoCarta extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.indigo.shade600,
                         )),
-                    Text(turno,
-                        softWrap: true,
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 19.0,
-                          fontWeight: FontWeight.w300,
-                          fontStyle: FontStyle.italic,
-                          color: Colors.indigo.shade300,
-                        )),
-                    Text(
-                        "$numAlumnos alumnos, ${dias.fold(0, (previous, element) => element == true ? previous + 1 : previous)} dias a la semana",
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            // color: Colors.black26,
-                            )),
+                    Row(
+                      children: [
+                        Icon(Icons.brightness_4,
+                            color: Colors.amber.shade600.withRed(200)),
+                        Text(
+                          turno,
+                          softWrap: true,
+                          maxLines: 2,
+                          style: TextStyle(
+                            fontSize: 19.0,
+                            fontWeight: FontWeight.w300,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.indigo.shade300,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.group,
+                          color: Colors.indigo,
+                        ),
+                        Text(
+                          numAlumnos.toString(),
+                          style: const TextStyle(
+                            color: Colors.indigo,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.schedule,
+                          color: Colors.indigo,
+                        ),
+                        Text(
+                          sesiones.toString(),
+                          style: const TextStyle(
+                            color: Colors.indigo,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

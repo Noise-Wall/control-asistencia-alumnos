@@ -1,5 +1,6 @@
 import 'package:control_asistencias/data/db_principal.dart';
 import 'package:control_asistencias/data/modelos/horarios.dart';
+import 'package:sqflite/utils/utils.dart';
 
 class CtrlHorarios {
   // Operaciones CRUD de los horarios.
@@ -28,11 +29,27 @@ class CtrlHorarios {
   Future<List<Horario>> readHorarioFromGrupo(int idGrupo) async {
     final db = await ControlAsistenciasDB.instance.database;
     final result = await db.query(
-        tableHorarios,
-        where: "${HorarioFields.idGrupo} = ?",
-        whereArgs: [idGrupo],
+      tableHorarios,
+      where: "${HorarioFields.idGrupo} = ?",
+      whereArgs: [idGrupo],
     );
     return result.map((json) => Horario.fromJson(json)).toList();
+  }
+
+  Future<int> countHorarioFromGrupo(int idGrupo) async {
+    final db = await ControlAsistenciasDB.instance.database;
+    final int count = firstIntValue(await db.rawQuery(
+            "SELECT COUNT (*) FROM $tableHorarios WHERE ${HorarioFields.idGrupo} = $idGrupo")) ??
+        0;
+    return count;
+  }
+
+  Future<int> countHorarioAll() async {
+    final db = await ControlAsistenciasDB.instance.database;
+    final int count = firstIntValue(
+            await db.rawQuery("SELECT COUNT (*) FROM $tableHorarios")) ??
+        0;
+    return count;
   }
 
   Future<int> updateHorario(Horario horario) async {
@@ -52,9 +69,9 @@ class CtrlHorarios {
     print('Id is $idGrupo');
     final db = await ControlAsistenciasDB.instance.database;
     return db.delete(
-        tableHorarios,
-        where: "${HorarioFields.idGrupo} = ?",
-        whereArgs: [idGrupo],
+      tableHorarios,
+      where: "${HorarioFields.idGrupo} = ?",
+      whereArgs: [idGrupo],
     );
   }
 }

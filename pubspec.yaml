@@ -20,6 +20,7 @@ dependencies:
   path:
   flutter_dotenv:
   adaptive_theme: ^3.6.0
+  intl: ^0.19.0
 
 
 dev_dependencies:
