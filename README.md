@@ -8,4 +8,20 @@ Este es un proyecto de Servicio Social por parte de la Universidad Autónoma de 
 
 ## Herramientas
 
-La aplicación utiliza Flutter para el diseño de la aplicación; el almacenamiento de información se realiza mediante Hive de manera local.
+La aplicación utiliza Flutter para el diseño de la aplicación; el almacenamiento de información se realiza mediante Sqflite de manera local.
+
+## Build
+
+Probado en Windows, Linux y Android.
+
+### Windows/Linux
+
+1. [Instalar Flutter]{https://docs.flutter.dev/get-started/install} y entorno de desarrollo para el mismo.
+
+2. Obtener paquetes mediante `flutter pub get`.
+
+3. Buildear aplicación.
+
+```bash
+$ flutter build
+```
