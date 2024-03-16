@@ -1,5 +1,6 @@
 import 'package:control_asistencias/data/db_principal.dart';
 import 'package:control_asistencias/data/modelos/horarios.dart';
+import 'package:control_asistencias/data/modelos/grupos.dart';
 import 'package:sqflite/utils/utils.dart';
 
 class CtrlHorarios {
@@ -34,6 +35,25 @@ class CtrlHorarios {
       whereArgs: [idGrupo],
     );
     return result.map((json) => Horario.fromJson(json)).toList();
+  }
+
+  Future<List<Map>> readHorarioFromDia(int dia) async {
+    final db = await ControlAsistenciasDB.instance.database;
+    // final result = await db.query(
+    //   tableHorarios,
+    //   where: "${HorarioFields.dia} = ?",
+    //   whereArgs: [dia],
+    // );
+
+    final String query = """
+        SELECT $tableHorarios.${HorarioFields.hora}, $tableGrupo.* 
+        FROM $tableHorarios 
+        RIGHT JOIN $tableGrupo ON $tableGrupo.${GrupoFields.idGrupo} = $tableHorarios.${HorarioFields.idGrupo} 
+        WHERE $tableHorarios.${HorarioFields.dia} = $dia
+        """;
+
+    final result = await db.rawQuery(query);
+    return result.toList();
   }
 
   Future<int> countHorarioFromGrupo(int idGrupo) async {

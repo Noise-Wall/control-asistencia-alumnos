@@ -1,6 +1,8 @@
 import 'package:control_asistencias/componentes/anim_carga.dart';
+import 'package:control_asistencias/componentes/scrollbar.dart';
 import 'package:control_asistencias/data/controladores/ctrl_grupos.dart';
 import 'package:control_asistencias/data/controladores/ctrl_horarios.dart';
+import 'package:control_asistencias/data/modelos/grupos.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -19,11 +21,15 @@ class _InicioState extends State<Inicio> {
   int numGrupos = 0;
   int numSesiones = 0;
   String hoy = DateFormat('EEEE').format(DateTime.now());
+  late List<Map> horariosHoy;
 
   Future getStats() async {
     setState(() => isLoading = true);
+    print("Dia es ${DateTime.now().weekday}");
     numGrupos = await _ctrlGrupo.countGrupo();
     numSesiones = await CtrlHorarios().countHorarioAll();
+    horariosHoy =
+        await CtrlHorarios().readHorarioFromDia(DateTime.now().weekday - 1);
     setState(() => isLoading = false);
   }
 
@@ -74,7 +80,25 @@ class _InicioState extends State<Inicio> {
                       ],
                     ),
                   ),
-                  Text("Hoy es ${hoy}."),
+                  horariosHoy.isEmpty
+                      ? const Text("No hay clases el dia de hoy.")
+                      : Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10.0),
+                            padding: const EdgeInsets.all(25),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.indigo),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: BarraDesplazo(
+                              items: horariosHoy.length,
+                              itemABuildear: (context, index) =>
+                                  // Text("${horariosHoy[index].nombreGrupo}, ${horariosHoy[index].nombreMateria}")
+                                  Text("${horariosHoy[index]['nombreGrupo']} - ${horariosHoy[index]['nombreMateria']} (${horariosHoy[index]['hora']})"),
+                              itemInicio: Text("Clases del dia de hoy ($hoy)"),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),

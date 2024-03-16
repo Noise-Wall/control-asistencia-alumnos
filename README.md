@@ -1,5 +1,7 @@
 # Control de asistencias para alumnos
 
+![Aplicación](example.gif)
+
 ## Introducción
 
 Aplicación de control de asistencias enfocado en maestros universitarios, hecha en Flutter para tener funcionalidad multiplataforma con prioridad en aplicaciones móviles.
@@ -16,7 +18,7 @@ Probado en Windows, Linux y Android.
 
 ### Windows/Linux
 
-1. [Instalar Flutter]{https://docs.flutter.dev/get-started/install} y entorno de desarrollo para el mismo.
+1. [Instalar Flutter](https://docs.flutter.dev/get-started/install) y entorno de desarrollo para el mismo.
 
 2. Obtener paquetes mediante `flutter pub get`.
 
